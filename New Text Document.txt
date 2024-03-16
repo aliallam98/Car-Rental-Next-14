@@ -1,0 +1,5 @@
+1- prepaired search page and done with form search
+2- done with navbar and working on mobile nav
+3- preaired category,brand and car page with the subsugment to recieve ids 
+4 - added backgroud with video and heading 
+5 - added contact buttons 
