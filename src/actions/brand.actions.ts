@@ -1,4 +1,6 @@
+import connectToDatabase from "@/DB/connection";
 import brandModel from "@/DB/models/Brand.Model";
+import slugify from "slugify";
 
 export const getAllBrands = async () => {
     await connectToDatabase()
@@ -34,7 +36,7 @@ export const updateBrand = async (brandId:string,brandData:any,userId:string) =>
     if(!brandToUpdate) throw new Error("Cannot find this brand")
     if(brandToUpdate.createdBy !== userId) throw new Error("Unauthorized")
 
-    const newBrand = await findByIdAndUpdate(brandId,brandData,{new:true})
+    const newBrand = await brandModel.findByIdAndUpdate(brandId,brandData,{new:true})
     return {success:true,message:"Created",results:newBrand}
 };
 

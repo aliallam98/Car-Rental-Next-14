@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "Electronics",
+    "ImageUrl": "/images/category.jpg",
+    "createdBy": {
+      "fullName": "Ali allam"
+    },
+    "createdAt": "Date"
+  },
+  {
+    "id": "2",
+    "title": "Foods",
+    "ImageUrl": "/images/category.jpg",
+    "createdBy": {
+      "fullName": "Ali allam"
+    },
+    "createdAt": "Date"
+  },
+  {
+    "id": "3",
+    "title": "Fashion",
+    "ImageUrl": "/images/category.jpg",
+    "createdBy": {
+      "fullName": "Ali allam"
+    },
+    "createdAt": "Date"
+  },
+  {
+    "id": "4",
+    "title": "Pet Care",
+    "ImageUrl": "/images/category.jpg",
+    "createdBy": {
+      "fullName": "Ali allam"
+    },
+    "createdAt": "Date"
+  }
+]

@@ -6,6 +6,8 @@ export default function Home() {
   return (
     <main>
       <Hero/>
+      
+      
       <BackgroundVideo
       headingOne='100+ SPORTS & LUXURY CARS'
       headingTwo='DRIVE YOUR DREAM CAR'

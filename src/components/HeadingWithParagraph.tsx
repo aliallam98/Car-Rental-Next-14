@@ -6,7 +6,7 @@ interface IProps {
   className?: string;
 }
 
-const HeadingWithParagraph = ({ heading, paragraph,className }: IProps) => {
+const HeadingWithParagraph = ({ heading, paragraph, className }: IProps) => {
   return (
     <div className={`${className} text-center space-y-5`}>
       <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold">{heading}</h2>

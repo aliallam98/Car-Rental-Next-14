@@ -1,3 +1,4 @@
+import { getBrandById } from '@/actions/brand.actions'
 import React from 'react'
 
 interface IProps {
@@ -5,7 +6,9 @@ interface IProps {
         id:string
     }
 }
-const page = ({params:{id}}:IProps) => {
+const page = async({params:{id}}:IProps) => {
+  const brandToFind = await getBrandById(id)
+
   return (
     <section>
         <p>Your Looking For Brand With Id : {id}</p>

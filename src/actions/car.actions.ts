@@ -1,4 +1,6 @@
+import connectToDatabase from "@/DB/connection";
 import carModel from "@/DB/models/Car.model";
+import slugify from "slugify";
 
 export const getAllCars = async () => {
     await connectToDatabase()
@@ -34,7 +36,7 @@ export const updateCar = async (carId:string,carData:any,userId:string) => {
     if(!carToUpdate) throw new Error("Cannot find this car")
     if(carToUpdate.createdBy !== userId) throw new Error("Unauthorized")
 
-    const newCar = await findByIdAndUpdate(carId,carData,{new:true})
+    const newCar = await carModel.findByIdAndUpdate(carId,carData,{new:true})
     return {success:true,message:"Created",results:newCar}
 };
 

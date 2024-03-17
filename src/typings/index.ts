@@ -5,3 +5,8 @@ export interface IBrand {
     description?: string;
     imageUrl: string;
 }
+export interface ICategory {
+    name: string;
+    description?: string;
+    imageUrl: string;
+}

@@ -1,16 +1,19 @@
-import React from 'react'
+import { getCategoryById } from "@/actions/category.actions";
+import React from "react";
 
 interface IProps {
-    params:{
-        id:string
-    }
+  params: {
+    id: string;
+  };
 }
-const page = ({params:{id}}:IProps) => {
+const CategoryDetailsPage = async({ params: { id } }: IProps) => {
+  const categoryToFind = await getCategoryById(id)
+  
   return (
     <section>
-        <p>Your Looking For Category With Id : {id}</p>
+      <p>Your Looking For Category With Id : {id}</p>
     </section>
-  )
-}
+  );
+};
 
-export default page
+export default CategoryDetailsPage;

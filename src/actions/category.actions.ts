@@ -1,4 +1,6 @@
+import connectToDatabase from "@/DB/connection";
 import categoryModel from "@/DB/models/Category.Model";
+import slugify from "slugify";
 
 export const getAllCategories = async () => {
     await connectToDatabase()
@@ -32,10 +34,9 @@ export const updateCategory = async (categoryId:string,categoryData:any,userId:s
     if(!categoryToUpdate) throw new Error("Cannot find this category")
     if(categoryToUpdate.createdBy !== userId) throw new Error("Unauthorized")
 
-    const newCategory = await findByIdAndUpdate(categoryId,categoryData)
+    const newCategory = await categoryModel.findByIdAndUpdate(categoryId,categoryData)
     
 };
-
 
 export const deleteCategory = async (categoryId:string,userId:string) => {
     await connectToDatabase()

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import BrandCard from "./_components/BrandCard";
+import Section from "@/components/Section";
+import { getAllBrands } from "@/actions/brand.actions";
 
 export const metadata: Metadata = {
   title: "Brand Page",
@@ -55,9 +57,10 @@ export const brandsData = [
   },
 ];
 
-const BrandPage = () => {
+const BrandPage = async() => {
+  const brands = await getAllBrands()
   return (
-    <section className="py-5 md:py-10">
+    <Section>
       <div className="container max-w-[1140px]">
         <HeadingWithParagraph
           heading="Brands Page"
@@ -71,7 +74,7 @@ const BrandPage = () => {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 };
 

@@ -1,11 +1,11 @@
+import { Skeleton } from "@/components/ui/skeleton";
 import { IBrand } from "@/typings";
 import Image from "next/image";
 
-
 interface IProps {
-    brand:IBrand
+  brand: IBrand;
 }
-const BrandCard = ({brand}:IProps) => {
+const BrandCard = ({ brand }: IProps) => {
   return (
     <article className="w-60 h-60 p-5 text-center shadow-lg mx-auto">
       <figure>
@@ -26,7 +26,14 @@ const BrandCard = ({brand}:IProps) => {
 
 export default BrandCard;
 
-
-BrandCard.Skeleton = function brandCardSkeleton(){
-    return 
-} 
+BrandCard.Skeleton = function brandCardSkeleton() {
+  return (
+    <div className="flex flex-col space-y-3">
+      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+      </div>
+    </div>
+  );
+};
