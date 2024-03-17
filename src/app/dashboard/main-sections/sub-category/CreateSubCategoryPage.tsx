@@ -1,11 +1,11 @@
-import CreateCategorySubBrandForm from "../../forms/CreateCategorySubBrandForm"
+import CreateCategorySubBrandForm from "../../_components/forms/CreateCategoryAndBrandForm";
 
 const CreateSubCategoryPage = () => {
   return (
     <>
-    <CreateCategorySubBrandForm type="SubCategory" method="Create" />
-  </>
-  )
-}
+      <CreateCategorySubBrandForm type="SubCategory" method="Create" />
+    </>
+  );
+};
 
-export default CreateSubCategoryPage
+export default CreateSubCategoryPage;

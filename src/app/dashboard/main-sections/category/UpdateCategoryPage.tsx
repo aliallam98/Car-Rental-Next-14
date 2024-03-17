@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 
-import CreateCategorySubBrandForm from "../../forms/CreateCategorySubBrandForm";
+import CreateCategorySubBrandForm from "../../_components/forms/CreateCategoryAndBrandForm";
 import { useQuery } from "react-query";
 import { fetcher } from "@/lib/utils";
 import SectionSpinner from "@/components/SectionSpinner";

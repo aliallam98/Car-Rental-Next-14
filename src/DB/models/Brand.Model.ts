@@ -4,14 +4,13 @@ const brandSchema = new Schema({
     title:{type:String,required:true,unique:true},
     slug:String,
     imageUrl:{type:String,required:true},
-    createdBy : {type:Types.objectId, ref:"User"},
-    cars:[{type:Types.objectId, ref:"Car"}]
+    // createdBy : {type:Types.ObjectId, ref:"User"},
 },{
     timeStamp:true,
     strict:true
 })
 
-const brandModel = models.Brand || model("Brand",brandSchema)
+const brandModel =  model("Brand",brandSchema)
 
 
 export default brandModel

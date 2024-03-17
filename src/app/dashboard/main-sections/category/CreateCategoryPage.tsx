@@ -1,4 +1,4 @@
-import CreateCategorySubBrandForm from "../../forms/CreateCategorySubBrandForm";
+import CreateCategorySubBrandForm from "../../_components/forms/CreateCategoryAndBrandForm";
 
 const CreateCategoryPage = () => {
   return (

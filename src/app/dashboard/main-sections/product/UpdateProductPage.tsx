@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetcher } from "@/lib/utils";
 import SectionSpinner from "@/components/SectionSpinner";
-import CreateProductForm from "../../forms/CreateProductForm";
+import CreateProductForm from "../../_components/forms/CreateProductForm";
 
 const UpdateProductPage = () => {
   const { id } = useParams();

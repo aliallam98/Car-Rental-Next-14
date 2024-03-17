@@ -1,11 +1,11 @@
-import CreateProductForm from "../../forms/CreateProductForm"
+import CreateProductForm from "../../_components/forms/CreateProductForm";
 
 const CreateProductPage = () => {
   return (
     <>
-    <CreateProductForm method="Create" />
-  </>
-  )
-}
+      <CreateProductForm method="Create" />
+    </>
+  );
+};
 
-export default CreateProductPage
+export default CreateProductPage;

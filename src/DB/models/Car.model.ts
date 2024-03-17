@@ -1,4 +1,4 @@
-import {Schema , model, models,Types} from "mongoose"
+import {Schema , model,Types} from "mongoose"
 
 
 const carSchema = new Schema({
@@ -12,15 +12,15 @@ const carSchema = new Schema({
     KilometersIncluded:{type:Number,required:true},
     rentalCost:{type:Number,required:true},
     relatedVideo:String,
-    createdBy : {type:Types.objectId, ref:"User"},
-    categoryId: { type:Types.objectId, ref:"Category"},
-    brandId: { type:Types.objectId, ref:"Brand"},
+    // createdBy : {type:Types.ObjectId, ref:"User"},
+    // categoryId: { type:Types.ObjectId, ref:"Category"},
+    // brandId: { type:Types.ObjectId, ref:"Brand"},
 },{
     timeStamp:true,
     strict:true
 })
 
-const carModel = models.Car || model("Car",carSchema)
+const carModel = model("Car",carSchema)
 
 
 export default carModel
