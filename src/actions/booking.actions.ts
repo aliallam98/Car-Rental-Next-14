@@ -1,3 +1,5 @@
+"use server"
+
 import connectToDatabase from "@/DB/connection"
 import bookingModel from "@/DB/models/Booking.Model"
 

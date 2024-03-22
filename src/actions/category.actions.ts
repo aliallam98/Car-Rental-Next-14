@@ -1,3 +1,5 @@
+"use server"
+
 import connectToDatabase from "@/DB/connection";
 import categoryModel from "@/DB/models/Category.Model";
 import slugify from "slugify";
@@ -5,7 +7,6 @@ import slugify from "slugify";
 export const getAllCategories = async () => {
     await connectToDatabase()
     const categories = await categoryModel.find({})
-
     return categories
 };
 

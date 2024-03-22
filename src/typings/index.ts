@@ -1,12 +1,28 @@
-
-
 export interface IBrand {
-    name: string;
-    description?: string;
-    imageUrl: string;
+  _id: string;
+  name: string;
+  description?: string;
+  imageUrl: string;
 }
 export interface ICategory {
-    name: string;
-    description?: string;
-    imageUrl: string;
+  _id: string;
+  name: string;
+  description?: string;
+  imageUrl: string;
+}
+
+export interface ICar {
+  _id: string;
+  name: string;
+  description?: string; // Optional
+  slug?: string; // Optional
+  imagesUrl: string[];
+  modelYear: number;
+  seater: number;
+  powerHorse: number;
+  kilometersIncluded: number;
+  rentalCost: number;
+  relatedVideo?: string; // Optional
+  categoryId?: string; // Optional reference
+  brandId?: string; // Optional reference
 }

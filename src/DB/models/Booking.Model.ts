@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types, model } from "mongoose";
+import { Document, Schema, Types, model, models } from "mongoose";
 
 const bookingSchema = new Schema(
   {
@@ -20,6 +20,6 @@ const bookingSchema = new Schema(
   { timestamps: true }
 );
 
-const bookingModel = model("Booking", bookingSchema);
+const bookingModel =  model("Booking", bookingSchema); //models.Booking ||
 
 export default bookingModel;

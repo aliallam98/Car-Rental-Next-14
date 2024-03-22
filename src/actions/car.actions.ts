@@ -1,3 +1,5 @@
+"use server"
+
 import connectToDatabase from "@/DB/connection";
 import carModel from "@/DB/models/Car.model";
 import slugify from "slugify";

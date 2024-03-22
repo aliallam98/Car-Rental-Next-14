@@ -1,3 +1,5 @@
+"use server"
+
 import connectToDatabase from "@/DB/connection";
 import brandModel from "@/DB/models/Brand.Model";
 import slugify from "slugify";

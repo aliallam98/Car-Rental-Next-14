@@ -1,16 +1,18 @@
-import {Schema,model,models,Types} from "mongoose"
+import { Document, Schema, Types, model, models } from "mongoose";
 
-const brandSchema = new Schema({
-    title:{type:String,required:true,unique:true},
-    slug:String,
-    imageUrl:{type:String,required:true},
+const brandSchema = new Schema(
+  {
+    title: { type: String, required: true, unique: true },
+    slug: String,
+    imageUrl: { type: String, required: true },
     // createdBy : {type:Types.ObjectId, ref:"User"},
-},{
-    timeStamp:true,
-    strict:true
-})
+  },
+  {
+    timeStamp: true,
+    strict: true,
+  }
+);
 
-const brandModel =  model("Brand",brandSchema)
+const brandModel = models.Brand || model("Brand", brandSchema); //
 
-
-export default brandModel
+export default brandModel;
