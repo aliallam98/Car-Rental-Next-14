@@ -26,3 +26,11 @@ export interface ICar {
   categoryId?: string; // Optional reference
   brandId?: string; // Optional reference
 }
+
+export interface ICreateUserParams {
+  clerkId: string;
+  email: string;
+  firstName: String;
+  lastName: String;
+  image: String;
+}

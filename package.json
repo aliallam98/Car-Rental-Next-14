@@ -37,6 +37,7 @@
     "react-hook-form": "^7.51.1",
     "slugify": "^1.6.6",
     "sonner": "^1.4.3",
+    "svix": "^1.21.0",
     "swiper": "^11.0.5",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
