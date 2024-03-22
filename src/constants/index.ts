@@ -2,6 +2,9 @@ import {
   ClipboardList,
   Fullscreen,
   LayoutList,
+  LocateIcon,
+  Mail,
+  Phone,
   ShoppingCart,
   Store,
   Users,
@@ -45,6 +48,40 @@ export const faq = [
     q: `Are You Able To Deliver To Abu Dhabi?`,
     a: `Within the Emirate of Dubai, delivery is free. Nevertheless, we ship to other Emirates (500 AED Delivery costs).
     `,
+  },
+];
+
+export const navLinksArr = [
+  {
+    label: "Home",
+    path: "/",
+  },
+  {
+    label: "Category",
+    path: "/category",
+  },
+  {
+    label: "Brand",
+    path: "/brand",
+  },
+  {
+    label: "car",
+    path: "/car",
+  },
+];
+
+export const contactUs = [
+  {
+    label: "01020227001",
+    icon: Phone,
+  },
+  {
+    label: "allam98.ali@gmail.com",
+    icon: Mail,
+  },
+  {
+    label: "Qualibaya,Benha",
+    icon: LocateIcon,
   },
 ];
 

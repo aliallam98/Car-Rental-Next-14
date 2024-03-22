@@ -4,6 +4,7 @@ import connectToDatabase from "@/DB/connection";
 import userModel from "@/DB/models/User.model";
 import { handleError } from "@/lib/utils";
 import { ICreateUserParams } from "@/typings";
+import { currentUser } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 
 export const createUser = async (userData: ICreateUserParams) => {
@@ -22,7 +23,7 @@ export const createUser = async (userData: ICreateUserParams) => {
     return {
       success: true,
       message: "User Created",
-    //   results: newUser,
+      results: newUser,
     };
   } catch (error) {
     handleError(error);
@@ -77,6 +78,24 @@ export const deleteUser = async (clerkId: string) => {
     revalidatePath("/");
 
     return deletedUser ? deletedUser : null;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const checkUser = async () => {
+  try {
+    const user = await currentUser();
+    const userId = user?.publicMetadata.userId as string;
+    if (!userId) {
+      throw new Error("unauthorized");
+    }
+    await connectToDatabase();
+    const isExist = await userModel.findById(userId);
+    if (!isExist) {
+      throw new Error("User not found");
+    }
+    return userId;
   } catch (error) {
     handleError(error);
   }

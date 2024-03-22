@@ -28,8 +28,8 @@ export interface ICar {
 }
 
 export interface ICreateUserParams {
-  clerkId: string;
-  email: string;
+  clerkId?: string;
+  email?: string;
   firstName: String;
   lastName: String;
   image: String;

@@ -18,9 +18,9 @@ export const metadata = {
 // Simulate a database read for tasks.
 
 export default async function AdminBrandsPage() {
-  const categories = await getAllBrands();
+  const brands = await getAllBrands();
 
-  if (!categories) {
+  if (!brands) {
     return <p>Loading</p>;
   }
 
@@ -39,7 +39,7 @@ export default async function AdminBrandsPage() {
             </Button>
           </div>
         </div>
-        <DataTable data={categories} columns={columns} />\
+        <DataTable data={brands} columns={columns} />\
       </div>
     </>
   );

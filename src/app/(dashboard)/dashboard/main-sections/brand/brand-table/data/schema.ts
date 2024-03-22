@@ -5,12 +5,11 @@ import { z } from "zod";
 export const brandSchema = z.object({
   id: z.string(),
   name: z.string(),
-  image: z.object({
-    secure_url: z.string(),
-  }),
+  image: z.string(),
   createdBy: z.object({
     _id: z.string(),
-    fullName: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
   }),
   createdAt: z.string(),
   updatedAt: z.string(),

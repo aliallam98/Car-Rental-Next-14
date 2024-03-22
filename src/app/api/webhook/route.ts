@@ -1,9 +1,9 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions"; //
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { createUser, deleteUser, updateUser } from "@/actions/user.actions";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -79,12 +79,11 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const { id, image_url, first_name, last_name, username } = evt.data;
+    const { id, image_url, first_name, last_name } = evt.data;
 
     const user = {
       firstName: first_name,
       lastName: last_name,
-      userName: username!,
       image: image_url,
     };
 
