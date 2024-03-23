@@ -9,7 +9,6 @@ import { checkUser } from "./user.actions";
 export const getAllBrands = async () => {
     await connectToDatabase()
     const brands = await brandModel.find({})
-
     return brands
 };
 
