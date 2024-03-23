@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
-interface DataTableRowActionsProps<TData> {
+interface DataTableRowActionsProps<TData extends { _id: string }> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions<TData>({
+export function DataTableRowActions<TData extends { _id: string; }>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const id = row.original._id;
