@@ -10,10 +10,10 @@ export default authMiddleware({
     "/car",
     "/car/:id",
     "/search",
-    "/api/webhook/",
-    "/api/edgestore/",
+    "/api/webhook",
+    "/api/edgestore",
   ],
-  ignoredRoutes: ["/api/webhook/", "/api/edgestore/"],
+  ignoredRoutes: ["/api/webhook", "/api/edgestore"],
 });
 
 export const config = {
