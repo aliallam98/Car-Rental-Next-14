@@ -32,8 +32,7 @@ const formSchema = z.object({
     })
     .max(50),
   description: z.optional(z.string()),
-
-  imageUrl: z.any(),
+  imageUrl: z.string(),
 });
 
 interface IProps {
@@ -74,12 +73,12 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
           });
           values.imageUrl = res.url;
         }
-        // await createCategory();
+        await createCategory(values);
       });
     }
     if (type === "Category" && method === "Update") {
       startTransition(async () => {
-        await updateCategory();
+        await updateCategory(data?._id!, values);
       });
     }
     if (type === "Brand" && method === "Create") {
@@ -99,12 +98,12 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
           });
           values.imageUrl = res.url;
         }
-        // await createBrand();
+        await createBrand(values);
       });
     }
     if (type === "Brand" && method === "Update") {
       startTransition(async () => {
-        await updateBrand();
+        await updateBrand(data?._id!, values);
       });
     }
   }

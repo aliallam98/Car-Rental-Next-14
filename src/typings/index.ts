@@ -34,3 +34,28 @@ export interface ICreateUserParams {
   lastName: String;
   image: String;
 }
+
+export interface ICreateCategoryParams {
+  name: string;
+  slug?: String;
+  description?: String;
+  imageUrl: String;
+  createdBy?: string;
+}
+export interface ICreateBrandParams {
+  name: string;
+  slug?: String;
+  description?: String;
+  imageUrl: String;
+  createdBy?: string;
+}
+export interface IUpdateCategoryParams {
+  name?: string;
+  description?: String;
+  imageUrl?: String;
+}
+export interface IUpdateBrandParams {
+  name?: string;
+  description?: String;
+  imageUrl?: String;
+}

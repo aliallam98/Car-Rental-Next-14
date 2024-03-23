@@ -2,7 +2,9 @@
 
 import connectToDatabase from "@/DB/connection";
 import brandModel from "@/DB/models/Brand.Model";
+import { ICreateBrandParams, IUpdateBrandParams } from "@/typings";
 import slugify from "slugify";
+import { checkUser } from "./user.actions";
 
 export const getAllBrands = async () => {
     await connectToDatabase()
@@ -21,17 +23,21 @@ export const getBrandById = async (id:string) => {
     return brand
 };
 
-export const createBrand = async (brandData:any,userId:string) => {
+export const createBrand = async (brandData:ICreateBrandParams) => {
+    const userId = await checkUser()
+
     await connectToDatabase()
 
-    brandData.slug = slugify(brandData.title)
+    brandData.slug = slugify(brandData.name)
     brandData.createdBy = userId
 
     const newBrand = await brandModel.create(brandData)
     return {success:true,message:"Created",results:newBrand}
 };
 
-export const updateBrand = async (brandId:string,brandData:any,userId:string) => {
+export const updateBrand = async (brandId:string,brandData:IUpdateBrandParams) => {
+    const userId = await checkUser()
+
     await connectToDatabase()
 
     const brandToUpdate = await brandModel.findById(brandId)
