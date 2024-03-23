@@ -5,7 +5,7 @@ import { z } from "zod";
 export const categorySchema = z.object({
   _id: z.string(),
   name: z.string(),
-  image: z.string(),
+  imageUrl: z.string(),
   createdBy: z.object({
     _id: z.string(),
     firstName: z.string(),

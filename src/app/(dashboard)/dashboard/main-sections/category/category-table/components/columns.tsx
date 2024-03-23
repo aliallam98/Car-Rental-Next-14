@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDateTime } from "@/lib/utils";
+import Image from "next/image";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -50,8 +51,8 @@ export const columns: ColumnDef<Category>[] = [
     ),
     cell: ({ row }) => (
       <div className="w-fit">
-        <img
-          src={row.original.image.secure_url}
+        <Image
+          src={row.original.imageUrl}
           alt="category image"
           width={50}
           height={50}
@@ -68,7 +69,7 @@ export const columns: ColumnDef<Category>[] = [
     ),
     cell: ({ row }) => (
       <div className="w-[80px] text-center">
-        {row.original.createdBy.fullName}
+        {row.original.createdBy.firstName}
       </div>
     ),
     enableSorting: true,
