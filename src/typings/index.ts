@@ -29,6 +29,20 @@ export interface ICar {
   brandId?: string; // Optional reference
 }
 
+export interface IBooking {
+  _id: string;
+  fullName: string;
+  mobilePhone: string;
+  specialRequest?: string; // Optional string property
+  rentalStartDate: Date;
+  rentalEndDate: Date;
+  // carId: string;
+  carNameAndModel: string;
+  status: "Pending" | "Received"; // Enforces enum values
+  createdAt: Date; // Inherited from timestamps: true
+  updatedAt: Date; // Inherited from timestamps: true
+}
+
 export interface ICreateUserParams {
   clerkId?: string;
   email?: string;

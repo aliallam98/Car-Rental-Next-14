@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
@@ -27,15 +28,17 @@ import { Input } from "@/components/ui/input";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { Textarea } from "../ui/textarea";
+import { createBooking } from "@/actions/booking.actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   carNameAndModel: z.string().min(1),
-  name: z.string().min(2, {
+  fullName: z.string().min(2, {
     message: "name required",
   }),
-  mobileNumber: z.string().min(2, {
+  mobilePhone: z.string().min(2, {
     message: "Phone Required",
   }),
   specialRequest: z.string(),
@@ -45,18 +48,18 @@ const formSchema = z.object({
   rentalEndDate: z.date().min(new Date(), {
     message: "start date required",
   }),
-  carId:z.string()
+  carId: z.string(),
 });
 
 interface IProps {
   carNameAndModel: string;
   children: React.ReactNode;
-  carId:string
+  carId: string;
 }
-const BookingModel = ({ children, carNameAndModel,carId }: IProps) => {
+const BookingModel = ({ children, carNameAndModel, carId }: IProps) => {
   const [isRendered, setIsRendered] = useState(false);
   const [isPending, startTransition] = useTransition();
-
+  const closeModelRef = useRef<HTMLButtonElement| null>(null);
 
   useEffect(() => {
     setIsRendered(true);
@@ -65,20 +68,28 @@ const BookingModel = ({ children, carNameAndModel,carId }: IProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      mobileNumber: "",
+        fullName: "",
+        mobilePhone: "",
       specialRequest: "",
       rentalStartDate: new Date(),
       rentalEndDate: new Date(),
       carNameAndModel,
-      carId
+      carId,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
+    startTransition(async () => {
+      const res = await createBooking(values);
+      if (res.success) {
+        toast.success("Your Request Has Sent .");
+        form.reset();
+        closeModelRef?.current?.click();
+      }else{
+        toast.success("Something went wrong");
+      }
+    });
   }
 
   if (!isRendered) {
@@ -88,12 +99,13 @@ const BookingModel = ({ children, carNameAndModel,carId }: IProps) => {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
+      <DialogClose ref={closeModelRef} />
       <DialogContent className="max-w-2xl pt-10">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="name"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -105,7 +117,7 @@ const BookingModel = ({ children, carNameAndModel,carId }: IProps) => {
             />
             <FormField
               control={form.control}
-              name="mobileNumber"
+              name="mobilePhone"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

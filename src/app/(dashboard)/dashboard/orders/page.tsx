@@ -1,5 +1,7 @@
+import AdminOrderPage from "../main-sections/order/category-table/page";
+
 const OrdersPage = () => {
-  return <div></div>;
+  return <AdminOrderPage/>
 };
 
 export default OrdersPage;

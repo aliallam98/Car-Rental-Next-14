@@ -10,8 +10,8 @@ const bookingSchema = new Schema(
     specialRequest: String,
     rentalStartDate: { type: Date, required: true, min: Date.now() },
     rentalEndDate: { type: Date, required: true, min: Date.now() },
-    carId: { type: Types.ObjectId, ref: "Car", required: true },
-    carNameAndModel :{ type: String, required: true, lowercase: true },
+    // carId: { type: Types.ObjectId, ref: "Car", required: true },
+    carNameAndModel: { type: String, required: true, lowercase: true },
     status: {
       type: String,
       default: "Pending",
@@ -21,6 +21,6 @@ const bookingSchema = new Schema(
   { timestamps: true }
 );
 
-const bookingModel = model("Booking", bookingSchema); //models.Booking ||
+const bookingModel = models.Booking || model("Booking", bookingSchema); //
 
 export default bookingModel;
