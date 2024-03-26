@@ -7,7 +7,7 @@ interface IProps {
 }
 const BrandCard = ({ brand }: IProps) => {
   return (
-    <article className="w-60 h-60 p-5 text-center shadow-lg mx-auto">
+    <article className="w-60 h-60 p-5 text-center shadow-lg mx-auto rounded-3xl">
       <figure>
         <Image
           className="w-40 h-40 object-contain mx-auto"

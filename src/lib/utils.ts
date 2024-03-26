@@ -53,5 +53,5 @@ export const formatDateTime = (dateString: Date) => {
 
 export const handleError = (error: unknown) => {
   console.error(error)
-  throw new Error(typeof error === 'string' ? error : JSON.stringify(error))
+  throw new Error(JSON.stringify(error))
 }

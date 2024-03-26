@@ -54,8 +54,9 @@ export const columns: ColumnDef<Category>[] = [
         <Image
           src={row.original.imageUrl}
           alt="category image"
-          width={50}
-          height={50}
+          width={80}
+          height={80}
+          className="w-[80px] h-[80px]  object-contain"
         />
       </div>
     ),
@@ -69,7 +70,9 @@ export const columns: ColumnDef<Category>[] = [
     ),
     cell: ({ row }) => (
       <div className="w-[80px] text-center">
-        {row.original.createdBy.firstName}
+        {row.original?.createdBy?.firstName +
+          " " +
+          row.original?.createdBy?.lastName}
       </div>
     ),
     enableSorting: true,

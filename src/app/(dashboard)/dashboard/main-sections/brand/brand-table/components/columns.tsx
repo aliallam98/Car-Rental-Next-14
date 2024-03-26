@@ -68,7 +68,7 @@ export const columns: ColumnDef<Brand>[] = [
     ),
     cell: ({ row }) => (
       <div className="w-[80px] text-center">
-        {row.original.createdBy.firstName}
+        {row.original.createdBy.firstName + " " + row.original.createdBy.lastName}
       </div>
     ),
     enableSorting: true,

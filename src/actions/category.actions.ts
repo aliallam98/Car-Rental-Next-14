@@ -5,51 +5,108 @@ import categoryModel from "@/DB/models/Category.Model";
 import slugify from "slugify";
 import { checkUser } from "./user.actions";
 import { ICreateCategoryParams, IUpdateCategoryParams } from "@/typings";
+import userModel from "@/DB/models/User.model";
 
 export const getAllCategories = async () => {
   await connectToDatabase();
-  const categories = await categoryModel.find({});
-  return categories;
+  const categories = await categoryModel.find().populate([
+    {
+      path: "createdBy",
+      select: "firstName lastName",
+    },
+  ]);
+
+  return JSON.parse(JSON.stringify(categories));
 };
 
 export const getCategoryById = async (id: string) => {
-  await connectToDatabase();
+  try {
+    await connectToDatabase();
 
-  const category = await categoryModel.findById(id);
+    const category = await categoryModel
+      .findById(id)
+      .populate([{ path: "createdBy", select: "firstName lastName" }]);
 
-  if (!category) throw new Error("Cannot Find This Category");
+    if (!category) throw new Error("Cannot Find This Category");
 
-  return category;
+    return {
+      success: true,
+      message: `Done`,
+      results: JSON.parse(JSON.stringify(category)),
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
 };
+
+
 
 export const createCategory = async (categoryData: ICreateCategoryParams) => {
-  const userId = await checkUser();
-  await connectToDatabase();
-  categoryData.slug = slugify(categoryData.name);
-  categoryData.createdBy = userId!;
-  const newCategory = await categoryModel.create(categoryData);
-  return newCategory;
+  try {
+    const userId = await checkUser();
+    await connectToDatabase();
+
+    categoryData.name = categoryData.name.toLowerCase();
+    const isCategoryExist = await categoryModel.findOne({
+      name: categoryData.name,
+    });
+
+    if (isCategoryExist) {
+      throw new Error(`Category ${categoryData.name} already exists`);
+    }
+
+    categoryData.slug = slugify(categoryData.name);
+    categoryData.createdBy = userId!;
+    const newCategory = await categoryModel.create(categoryData);
+    return {
+      success: true,
+      message: `Category ${newCategory.name} Created successfully`,
+      results: newCategory,
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
 };
+
 export const updateCategory = async (
   categoryId: string,
   categoryData: IUpdateCategoryParams
 ) => {
-  await connectToDatabase();
-  const userId = await checkUser();
-  const categoryToUpdate = await categoryModel.findById(categoryId);
-  if (!categoryToUpdate) throw new Error("Cannot find this category");
-  if (categoryToUpdate.createdBy !== userId) throw new Error("Unauthorized");
+  try {
+    await connectToDatabase();
+    const userId = await checkUser();
+    const categoryToUpdate = await categoryModel.findById(categoryId);
 
-  const newCategory = await categoryModel.findByIdAndUpdate(
-    categoryId,
-    {
-      ...categoryData,
-    },
-    {
-      new: true,
-    }
-  );
-  return newCategory;
+    if (!categoryToUpdate) throw new Error("Cannot find this category");
+    if (categoryToUpdate?.createdBy.toString() !== userId?.toString())
+      throw new Error("Unauthorized");
+
+    const newCategory = await categoryModel.findByIdAndUpdate(
+      categoryId,
+      {
+        ...categoryData,
+      },
+      {
+        new: true,
+      }
+    );
+    return {
+      success: true,
+      message: `Category ${newCategory?.name} Updated successfully`,
+      results: JSON.parse(JSON.stringify(categoryData)),
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
 };
 
 export const deleteCategory = async (categoryId: string) => {

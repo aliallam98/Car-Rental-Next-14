@@ -24,7 +24,7 @@ export function DataTableRowActions<TData extends { _id: string }>({
         <Trash size={16} />
       </Button>
       <Button asChild variant={"ghost"} className="h-auto p-2">
-        <Link href={`/dashboard/category/${id}/edit`}>
+        <Link href={`/dashboard/categories/${id}/edit`}>
           <Pencil size={16} />
         </Link>
       </Button>

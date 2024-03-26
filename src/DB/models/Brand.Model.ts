@@ -2,13 +2,13 @@ import { Document, Schema, Types, model, models } from "mongoose";
 
 const brandSchema = new Schema(
   {
-    title: { type: String, required: true, unique: true },
+    name: { type: String, required: true, unique: true },
     slug: String,
     imageUrl: { type: String, required: true },
-    // createdBy : {type:Types.ObjectId, ref:"User"},
+    createdBy: { type: Types.ObjectId, ref: "User" },
   },
   {
-    timeStamp: true,
+    timestamps: true,
     strict: true,
   }
 );

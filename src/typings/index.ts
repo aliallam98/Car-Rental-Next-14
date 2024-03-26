@@ -1,11 +1,13 @@
 export interface IBrand {
   _id: string;
+  slug: string;
   name: string;
   description?: string;
   imageUrl: string;
 }
 export interface ICategory {
   _id: string;
+  slug: string;
   name: string;
   description?: string;
   imageUrl: string;
@@ -39,14 +41,14 @@ export interface ICreateCategoryParams {
   name: string;
   slug?: String;
   description?: String;
-  imageUrl: String;
+  imageUrl?: String;
   createdBy?: string;
 }
 export interface ICreateBrandParams {
   name: string;
   slug?: String;
   description?: String;
-  imageUrl: String;
+  imageUrl?: String;
   createdBy?: string;
 }
 export interface IUpdateCategoryParams {

@@ -24,17 +24,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEdgeStore } from "@/lib/edgestore";
 import { SingleImageDropzone } from "../SingleImageDropzone";
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, {
-      message: "name is required",
-    })
-    .max(50),
-  description: z.optional(z.string()),
-  imageUrl: z.string(),
-});
-
 interface IProps {
   type: "Category" | "Brand";
   method: "Create" | "Update";
@@ -43,8 +32,19 @@ interface IProps {
 
 const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
   const [isPending, startTransition] = useTransition();
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const { edgestore } = useEdgeStore();
+
+  const formSchema = z.object({
+    name: z
+      .string()
+      .min(2, {
+        message: "name is required",
+      })
+      .max(50),
+    description: z.optional(z.string()),
+    imageUrl: method === "Create" ? z.string() : z.optional(z.string()),
+  });
 
   const defaultValue = { name: "", description: "" };
   const initValues =
@@ -73,14 +73,27 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
           });
           values.imageUrl = res.url;
         }
-        await createCategory(values);
+        console.log("values", values);
+
+        const res = await createCategory(values);
+        if (res.success) {
+          toast.success(res.message);
+          form.reset();
+          setFile(null);
+        } else {
+          toast.error(res.message);
+        }
       });
     }
     if (type === "Category" && method === "Update") {
       startTransition(async () => {
-        await updateCategory(data?._id!, values);
+        const res = await updateCategory(data?._id!, values);
+        if (res.success) {
+          toast.success(res.message);
+        } else toast.error(res.message);
       });
     }
+
     if (type === "Brand" && method === "Create") {
       if (!file) {
         return form.setError("imageUrl", {
@@ -98,9 +111,17 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
           });
           values.imageUrl = res.url;
         }
-        await createBrand(values);
+        const res = await createBrand(values);
+        if (res.success) {
+          toast.success(res.message);
+          form.reset();
+          setFile(null);
+        } else {
+          toast.error(res.message);
+        }
       });
     }
+
     if (type === "Brand" && method === "Update") {
       startTransition(async () => {
         await updateBrand(data?._id!, values);
@@ -165,9 +186,9 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
                   {...field}
                   width={200}
                   height={200}
-                  value={file}
+                  value={file ? file : ""}
                   onChange={(file) => {
-                    setFile(file);
+                    setFile(file!);
                   }}
                   disabled={isPending}
                 />
@@ -190,5 +211,3 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
 };
 
 export default CreateCategoryAndBrandForm;
-
-

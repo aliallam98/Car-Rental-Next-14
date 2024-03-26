@@ -6,10 +6,14 @@ import { FormEvent, useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
+  const iconColor = pathname !== "/" ? "black" : "white";
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,12 +40,14 @@ const SearchBar = () => {
         <X
           className="absolute right-14 w-5 h-5 text-muted-foreground
             cursor-pointer hover:opacity-75"
-          color="#ffffff"
           onClick={() => setQuery("")}
         />
       )}
       <Input
-        className="border-r-none bg-transparent border-white/10 placeholder:text-white"
+        className={cn(
+          "border-r-none bg-transparent border-white/60 placeholder:text-white",
+          pathname !== "/" && "border-black placeholder:text-black"
+        )}
         placeholder="Search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -55,7 +61,7 @@ const SearchBar = () => {
         <SearchIcon
           size={16}
           className="text-muted-foreground"
-          color="#ffffff"
+          color={iconColor}
         />
       </Button>
     </form>

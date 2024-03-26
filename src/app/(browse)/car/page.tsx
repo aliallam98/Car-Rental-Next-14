@@ -22,14 +22,13 @@ const CarPage = async () => {
         />
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,300px))] justify-center gap-4">
-          {cars.map((car, i) => (
-            <Card
-              key={i}
-              title="Testing"
-              description="testing"
-              src="/test.webp"
-              href={`/car/${i}`}
-            />
+          {/* <Card
+            name="Testing"
+            description="testing"
+            src="/test.webp"
+          /> */}
+          {cars.map((car) => (
+            <Card key={car._id} data={car} />
           ))}
         </div>
       </div>

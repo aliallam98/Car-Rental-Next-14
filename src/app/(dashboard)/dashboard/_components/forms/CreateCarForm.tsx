@@ -32,11 +32,11 @@ import CategorySelect from "../CategorySelect";
 import BrandSelect from "../BrandSelect";
 
 const formSchema = z.object({
-  title: z.string().min(2, { message: "Title is required" }).max(50),
+  name: z.string().min(2, { message: "name is required" }).max(50),
   description: z.string().max(500).optional(),
-  imagesUrl: z
-    .array(z.string().url({ message: "Invalid image URL" }))
-    .min(1, { message: "At least one image is required" }),
+  imagesUrl: z.optional(
+    z.array(z.string().url({ message: "Invalid image URL" }))
+  ),
   modelYear: z.number().min(1900, "Year must be after 1900"),
   seater: z.number().min(1, "Seater count must be positive"),
   powerHorse: z.number().min(1, "Horsepower must be positive"),
@@ -45,10 +45,10 @@ const formSchema = z.object({
   relatedVideo: z.string().url().optional(),
   isOnSale: z.boolean(),
   discountByPercent: z.optional(
-    z.number().min(1, "Discount by percent must be non-negative")
+    z.number().min(0, "Discount by percent must be non-negative")
   ),
   discountByAmount: z.optional(
-    z.number().min(1, "Discount by percent must be non-negative")
+    z.number().min(0, "Discount by percent must be non-negative")
   ),
   // categoryId and brandId can be added here if needed (assuming these are references)
   categoryId: z.string().min(1, { message: "Category is required" }),
@@ -62,6 +62,7 @@ interface IProps {
 
 const CreateProductForm = ({ method, data }: IProps) => {
   const [isPending, startTransition] = useTransition();
+  const [isUploadingImages, setIsUploadingImages] = useState(false);
   const [fileStates, setFileStates] = useState<FileState[]>([]);
   const { edgestore } = useEdgeStore();
 
@@ -79,7 +80,7 @@ const CreateProductForm = ({ method, data }: IProps) => {
   }
 
   const defaultValue = {
-    title: "",
+    name: "",
     description: "",
     imagesUrl: [],
     modelYear: 0, // Can be adjusted to a more appropriate default value (e.g., 1900)
@@ -103,9 +104,17 @@ const CreateProductForm = ({ method, data }: IProps) => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (method === "Create") {
+      if (!fileStates.length) {
+        form.setError("imagesUrl", {
+          message: "At least one image is required",
+        });
+      } else {
+        form.setError("imagesUrl", { message: "" });
+      }
       let productImages: any = [];
       try {
         if (fileStates.length > 0) {
+          setIsUploadingImages(true)
           await Promise.all(
             fileStates.map(async (addedFileState) => {
               const res = await edgestore.publicFiles.upload({
@@ -125,15 +134,24 @@ const CreateProductForm = ({ method, data }: IProps) => {
             })
           );
           values.imagesUrl = productImages;
-          // const event = startTransition(async () => {
-          //   await createCar(values, userId);
-          // });
-          toast.success("Event Has Created");
+          values.name = form.getValues("name").toLowerCase();
+          startTransition(async () => {
+            const res = await createCar(values);
+            if (res.success) {
+              toast.success(`Car ${res.results.name} Created`);
+              form.reset();
+              setFileStates([])
+            } else {
+              toast.error(res.message);
+            }
+          });
           // router.push(event?.results._id);
         }
       } catch (err) {
-        toast.error("Error during Create Event:");
+        toast.error("Error during Create Doc:");
         console.log(err);
+      } finally {
+        setIsUploadingImages(false)
       }
     }
 
@@ -155,7 +173,7 @@ const CreateProductForm = ({ method, data }: IProps) => {
         {/* name */}
         <FormField
           control={form.control}
-          name="title"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -441,7 +459,7 @@ const CreateProductForm = ({ method, data }: IProps) => {
         />
 
         <Button
-          disabled={isPending}
+          disabled={isPending || isUploadingImages}
           type="submit"
           className="w-full  transition"
         >

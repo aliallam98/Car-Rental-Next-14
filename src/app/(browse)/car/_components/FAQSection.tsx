@@ -17,7 +17,7 @@ const FAQSection = () => {
       <p className="text-muted-foreground text-lg">
         frequently asked questions
       </p>
-      <div className="container max-w-[1000px]">
+      <div className="container max-w-[1000px] mt-20">
         {FAQ.map((item, i) => (
           <Accordion type="multiple" key={i}>
             <AccordionItem value="item-1">
