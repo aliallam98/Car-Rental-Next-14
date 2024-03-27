@@ -6,12 +6,19 @@ import slugify from "slugify";
 import { checkUser } from "./user.actions";
 import categoryModel from "@/DB/models/Category.Model";
 import brandModel from "@/DB/models/Brand.Model";
+import { createActivityLogs } from "./activity.action";
+import { ACTIONS_TYPE, ENTITY_TYPE } from "@/typings";
 
 export const getAllCars = async () => {
   await connectToDatabase();
-  const cars = await carModel.find({});
+  const cars = await carModel.find({}).populate([
+    {
+      path: "createdBy",
+      select: "firstName lastName",
+    },
+  ]);
 
-  return cars;
+  return JSON.parse(JSON.stringify(cars));
 };
 
 export const getCarById = async (id: string) => {
@@ -21,7 +28,7 @@ export const getCarById = async (id: string) => {
 
   if (!car) throw new Error("Cannot Find This car");
 
-  return car;
+  return JSON.parse(JSON.stringify(car));
 };
 
 export const createCar = async (carData: any) => {
@@ -45,6 +52,14 @@ export const createCar = async (carData: any) => {
     carData.slug = slugify(carData.name);
     carData.createdBy = userId;
     const newCar = await carModel.create(carData);
+
+
+    await createActivityLogs({
+      entityId: newCar._id,
+      entityTitle: newCar.name,
+      actionType: ACTIONS_TYPE.Create,
+      entityType: ENTITY_TYPE.Car,
+    });
 
     return {
       success: true,
@@ -70,6 +85,13 @@ export const updateCar = async (
   const newCar = await carModel.findByIdAndUpdate(carId, carData, {
     new: true,
   });
+
+  await createActivityLogs({
+    entityId: carToUpdate._id,
+    entityTitle: carToUpdate.name,
+    actionType: ACTIONS_TYPE.Update,
+    entityType: ENTITY_TYPE.Car,
+  });
   return { success: true, message: "Created", results: newCar };
 };
 
@@ -82,6 +104,13 @@ export const deleteCar = async (carId: string, userId: string) => {
   if (carToDelete.createdBy !== userId) throw new Error("Unauthorized");
 
   await carModel.findByIdAndDelete(carId);
+
+  await createActivityLogs({
+    entityId: carToDelete._id,
+    entityTitle: carToDelete.name,
+    actionType: ACTIONS_TYPE.Delete,
+    entityType: ENTITY_TYPE.Car,
+  });
 
   return { success: true, message: "Deleted" };
 };
@@ -132,8 +161,7 @@ export const getCarsByBrandSlug = async (slug: string) => {
     await connectToDatabase();
     const brandToFind = await brandModel.findOne({ slug });
 
-    console.log(brandToFind,slug);
-    
+    console.log(brandToFind, slug);
 
     if (!brandToFind) throw new Error("Cannot Find This brand");
 

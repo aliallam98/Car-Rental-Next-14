@@ -6,6 +6,8 @@ import { Category } from "../data/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
+import { formatDateTime } from "@/lib/utils";
+import Image from "next/image";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -33,32 +35,41 @@ export const columns: ColumnDef<Category>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category Name" />
+      <DataTableColumnHeader column={column} title="Car Name" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("title")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "imageUrl",
+    accessorKey: "image",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Image" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue("imageUrl")}</div>
+      <div className="w-fit">
+        <Image
+          src={row.original.imagesUrl[0]}
+          alt="CarImage"
+          width={50}
+          height={50}
+        />
+      </div>
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: true,
   },
   {
-    accessorKey: "id",
+    accessorKey: "createdBy",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="created-By" />
+      <DataTableColumnHeader column={column} title="Created-By" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue("createdBy.fullName")}</div>
+      <div className="w-[80px] text-center">
+        {row.original.createdBy.firstName + " " + row.original.createdBy.lastName}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true,
@@ -66,10 +77,12 @@ export const columns: ColumnDef<Category>[] = [
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="created-At" />
+      <DataTableColumnHeader column={column} title="created At" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue("createdAt")}</div>
+      <div className="w-[80px] text-center">
+        {formatDateTime(row.getValue("createdAt")).dateTime}
+      </div>
     ),
     enableSorting: true,
     enableHiding: true,

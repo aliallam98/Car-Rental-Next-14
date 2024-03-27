@@ -1,3 +1,16 @@
+export enum ACTIONS_TYPE {
+  Create = "Create",
+  Update = "Update",
+  Delete = "Delete",
+}
+
+export enum ENTITY_TYPE {
+  Category = "Category",
+  Brand = "Brand",
+  Car = "Car",
+  Booking = "Booking",
+}
+
 export interface IBrand {
   _id: string;
   slug: string;

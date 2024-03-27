@@ -6,6 +6,8 @@ import slugify from "slugify";
 import { checkUser } from "./user.actions";
 import { ICreateCategoryParams, IUpdateCategoryParams } from "@/typings";
 import userModel from "@/DB/models/User.model";
+import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
+import { createActivityLogs } from "./activity.action";
 
 export const getAllCategories = async () => {
   await connectToDatabase();
@@ -61,6 +63,14 @@ export const createCategory = async (categoryData: ICreateCategoryParams) => {
     categoryData.slug = slugify(categoryData.name);
     categoryData.createdBy = userId!;
     const newCategory = await categoryModel.create(categoryData);
+
+    await createActivityLogs({
+      entityId: newCategory._id,
+      entityTitle: newCategory.name,
+      actionType: ACTIONS_TYPE.Create,
+      entityType: ENTITY_TYPE.Category,
+    });
+
     return {
       success: true,
       message: `Category ${newCategory.name} Created successfully`,
@@ -96,6 +106,13 @@ export const updateCategory = async (
         new: true,
       }
     );
+
+    await createActivityLogs({
+      entityId: newCategory._id,
+      entityTitle: newCategory.name,
+      actionType: ACTIONS_TYPE.Update,
+      entityType: ENTITY_TYPE.Category,
+    });
     return {
       success: true,
       message: `Category ${newCategory?.name} Updated successfully`,
@@ -117,6 +134,13 @@ export const deleteCategory = async (categoryId: string) => {
   if (categoryToDelete.createdBy !== userId) throw new Error("Unauthorized");
 
   await categoryModel.findByIdAndDelete(categoryId);
+
+  await createActivityLogs({
+    entityId: categoryToDelete._id,
+    entityTitle: categoryToDelete.name,
+    actionType: ACTIONS_TYPE.Delete,
+    entityType: ENTITY_TYPE.Category,
+  });
 
   return { success: true, message: "Deleted" };
 };

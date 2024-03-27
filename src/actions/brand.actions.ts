@@ -6,6 +6,8 @@ import { ICreateBrandParams, IUpdateBrandParams } from "@/typings";
 import slugify from "slugify";
 import { checkUser } from "./user.actions";
 import { handleError } from "@/lib/utils";
+import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
+import { createActivityLogs } from "./activity.action";
 
 export const getAllBrands = async () => {
   await connectToDatabase();
@@ -42,10 +44,20 @@ export const createBrand = async (brandData: ICreateBrandParams) => {
 
 
     const newBrand = await brandModel.create(brandData);
+
+    const ac = await createActivityLogs({
+      entityId: newBrand._id,
+      entityTitle: newBrand.name,
+      actionType: ACTIONS_TYPE.Create,
+      entityType: ENTITY_TYPE.Brand,
+    });
+
+    console.log("Activity",ac);
+    
     return {
       success: true,
       message: `Brand ${newBrand.name} created successfully`,
-      results: newBrand,
+      results: JSON.parse(JSON.stringify(newBrand)),
     };
   } catch (error: any) {
     console.log(error);
@@ -72,6 +84,13 @@ export const updateBrand = async (
   const newBrand = await brandModel.findByIdAndUpdate(brandId, brandData, {
     new: true,
   });
+
+  await createActivityLogs({
+    entityId: brandToUpdate._id,
+    entityTitle: brandToUpdate.name,
+    actionType: ACTIONS_TYPE.Update,
+    entityType: ENTITY_TYPE.Brand,
+  });
   return { success: true, message: "Created", results: newBrand };
 };
 
@@ -83,6 +102,13 @@ export const deleteBrand = async (brandId: string, userId: string) => {
   if (!brandToDelete) throw new Error("Cannot Find This brand");
   if (brandToDelete.createdBy !== userId) throw new Error("Unauthorized");
   await brandModel.findByIdAndDelete(brandId);
+
+  await createActivityLogs({
+    entityId: brandToDelete._id,
+    entityTitle: brandToDelete.name,
+    actionType: ACTIONS_TYPE.Delete,
+    entityType: ENTITY_TYPE.Brand,
+  });
 
   return { success: true, message: "Deleted" };
 };

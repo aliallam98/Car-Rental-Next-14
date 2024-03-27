@@ -107,8 +107,8 @@ export const adminDashboardLinks = [
     icon: ShoppingCart,
   },
   {
-    label: "Customers",
-    path: `/dashboard/customers`,
+    label: "Activity",
+    path: `/dashboard/activity`,
     icon: Users,
   },
 ];

@@ -19,7 +19,7 @@ interface IProps {
 function BrandsAutoSlider({ brands }: IProps) {
   return (
     <>
-      <section className="p-10">
+      <section className="pt-10 brandsSliderSection">
         <div className="container max-w-[1140px]">
           <Swiper
             slidesPerView={"auto"}

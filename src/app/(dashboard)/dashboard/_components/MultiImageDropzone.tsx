@@ -196,9 +196,13 @@ const MultiImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
               <input className="h-20" ref={ref} {...getInputProps()} />
               <div className="flex flex-col items-center justify-center text-xs text-gray-400">
                 <UploadCloudIcon className="mb-2 h-7 w-7" />
-                <div className="text-gray-400 hidden md:block">drag & drop to upload</div>
+                <div className="text-gray-400 hidden md:block">
+                  drag & drop to upload
+                </div>
                 <div className="mt-3 hidden md:block">
-                  <Button disabled={disabled}>select</Button>
+                  <Button type="button" disabled={disabled}>
+                    select
+                  </Button>
                 </div>
               </div>
             </div>

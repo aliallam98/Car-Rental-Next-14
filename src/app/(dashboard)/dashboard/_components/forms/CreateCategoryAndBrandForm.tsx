@@ -35,6 +35,9 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
   const [file, setFile] = useState<File | null>(null);
   const { edgestore } = useEdgeStore();
 
+  console.log(file);
+  
+
   const formSchema = z.object({
     name: z
       .string()
@@ -43,7 +46,7 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
       })
       .max(50),
     description: z.optional(z.string()),
-    imageUrl: method === "Create" ? z.string() : z.optional(z.string()),
+    imageUrl: z.optional(z.string()),
   });
 
   const defaultValue = { name: "", description: "" };
@@ -202,6 +205,7 @@ const CreateCategoryAndBrandForm = ({ type, method, data }: IProps) => {
           disabled={isPending}
           type="submit"
           className="w-full  transition"
+          variant={"default"}
         >
           {method === "Create" ? "Create" : "Update"}
         </Button>

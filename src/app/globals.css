@@ -89,6 +89,16 @@ body,
   width: 100%;
   height: 100%;
 }
+.brandsSliderSection .swiper-wrapper {
+  height: 250px !important;
+}
+.brandsSliderSection .swiper-pagination {
+  position: absolute;
+  bottom: 10px !important;
+}
+.brandsSliderSection .swiper-pagination-bullet {
+  background-color: black !important;
+}
 
 /* .swiper-slide {
   text-align: center;
