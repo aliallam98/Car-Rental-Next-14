@@ -53,7 +53,6 @@ export const createCar = async (carData: any) => {
     carData.createdBy = userId;
     const newCar = await carModel.create(carData);
 
-
     await createActivityLogs({
       entityId: newCar._id,
       entityTitle: newCar.name,
@@ -95,24 +94,31 @@ export const updateCar = async (
   return { success: true, message: "Created", results: newCar };
 };
 
-export const deleteCar = async (carId: string, userId: string) => {
-  await connectToDatabase();
+export const deleteCar = async (carId: string) => {
+  try {
+    await connectToDatabase();
 
-  const carToDelete = await carModel.findById(carId);
+    const userId = await checkUser();
 
-  if (!carToDelete) throw new Error("Cannot Find This car");
-  if (carToDelete.createdBy !== userId) throw new Error("Unauthorized");
+    const carToDelete = await carModel.findById(carId);
 
-  await carModel.findByIdAndDelete(carId);
+    if (!carToDelete) throw new Error("Cannot Find This car");
+    if (carToDelete.createdBy.toString() !== userId?.toString())
+      throw new Error("Unauthorized");
 
-  await createActivityLogs({
-    entityId: carToDelete._id,
-    entityTitle: carToDelete.name,
-    actionType: ACTIONS_TYPE.Delete,
-    entityType: ENTITY_TYPE.Car,
-  });
+    await carModel.findByIdAndDelete(carId);
 
-  return { success: true, message: "Deleted" };
+    await createActivityLogs({
+      entityId: carToDelete._id,
+      entityTitle: carToDelete.name,
+      actionType: ACTIONS_TYPE.Delete,
+      entityType: ENTITY_TYPE.Car,
+    });
+
+    return { success: true, message: "Deleted" };
+  } catch (error) {
+    return { success: false, message: "Something went wrong" };
+  }
 };
 
 export const getCarBySlug = async (slug: String) => {
