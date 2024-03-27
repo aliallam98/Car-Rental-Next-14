@@ -8,6 +8,7 @@ import categoryModel from "@/DB/models/Category.Model";
 import brandModel from "@/DB/models/Brand.Model";
 import { createActivityLogs } from "./activity.action";
 import { ACTIONS_TYPE, ENTITY_TYPE } from "@/typings";
+import { revalidatePath } from "next/cache";
 
 export const getAllCars = async () => {
   await connectToDatabase();
@@ -91,6 +92,10 @@ export const updateCar = async (
     actionType: ACTIONS_TYPE.Update,
     entityType: ENTITY_TYPE.Car,
   });
+
+  revalidatePath(`/dashboard/cars/${carId}`);
+  revalidatePath("/dashboard/cars/");
+  revalidatePath("/dashboard/car/");
   return { success: true, message: "Created", results: newCar };
 };
 
@@ -114,6 +119,9 @@ export const deleteCar = async (carId: string) => {
       actionType: ACTIONS_TYPE.Delete,
       entityType: ENTITY_TYPE.Car,
     });
+
+    revalidatePath("/dashboard/cars");
+    revalidatePath("/car");
 
     return { success: true, message: "Deleted" };
   } catch (error) {

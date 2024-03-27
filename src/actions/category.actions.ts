@@ -112,6 +112,10 @@ export const updateCategory = async (
       actionType: ACTIONS_TYPE.Update,
       entityType: ENTITY_TYPE.Category,
     });
+
+    revalidatePath(`/dashboard/categories/${categoryId}`);
+    revalidatePath("/dashboard/categories/");
+    revalidatePath("/dashboard/category/");
     return {
       success: true,
       message: `Category ${newCategory?.name} Updated successfully`,
@@ -144,7 +148,6 @@ export const deleteCategory = async (categoryId: string) => {
       entityType: ENTITY_TYPE.Category,
     });
 
-    
     revalidatePath("/dashboard/categories");
     revalidatePath("/category");
     return {

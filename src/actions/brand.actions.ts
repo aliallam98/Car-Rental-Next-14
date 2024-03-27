@@ -91,6 +91,11 @@ export const updateBrand = async (
     actionType: ACTIONS_TYPE.Update,
     entityType: ENTITY_TYPE.Brand,
   });
+
+  
+  revalidatePath(`/dashboard/brands/${brandId}`);
+  revalidatePath("/dashboard/brands/");
+  revalidatePath("/dashboard/brand/");
   return { success: true, message: "Created", results: newBrand };
 };
 

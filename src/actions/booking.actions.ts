@@ -5,6 +5,7 @@ import bookingModel from "@/DB/models/Booking.Model";
 import { checkUser } from "./user.actions";
 import { ACTIONS_TYPE, ENTITY_TYPE } from "@/typings";
 import { createActivityLogs } from "./activity.action";
+import { revalidatePath } from "next/cache";
 
 export const getAllBookings = async () => {
   await connectToDatabase();
@@ -53,6 +54,9 @@ export const updateBooking = async (bookingData: any, bookingId: string) => {
       actionType: ACTIONS_TYPE.Update,
       entityType: ENTITY_TYPE.Booking,
     });
+
+    revalidatePath(`/dashboard/orders/${bookingId}`);
+    revalidatePath("/dashboard/orders/");
     return {
       success: true,
       message: "Updated",
