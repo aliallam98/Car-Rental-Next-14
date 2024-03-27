@@ -12,7 +12,11 @@ const NavLinks = () => {
       {navLinksArr.map((link, i) => (
         <li
           key={i}
-          className={cn("text-lg", pathname === link.path && "text-orange-600")}
+          className={cn(
+            "pb-2 px-2 transition navLink",
+            pathname === link.path &&
+              "text-orange-600 border-b border-orange-600 "
+          )}
         >
           <Link href={`${link.path}`}>{link.label}</Link>
         </li>

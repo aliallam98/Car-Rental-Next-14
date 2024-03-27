@@ -16,7 +16,15 @@ const CategoryPage = async () => {
   const categories = await getAllCategories();
 
   return (
-    <Section>
+    <section
+      className="py-10 px-5 min-h-screen mt-20
+     bg-[url(https://purepng.com/public/uploads/large/purepng.com-ferrari-488-gtb-red-carcarferrarivehicletransport-9615246654455whpm.png),_url(https://wallpapers.com/images/hd/white-luxury-sports-car-95mu1ojxaty943fq.png)]
+     bg-[position:top_5rem_right_-15rem,_bottom_1rem_left_-12rem]
+     md:bg-[position:top_5rem_right_-10rem,_bottom_1rem_left_-8rem] 
+      bg-no-repeat
+      bg-[length:368px_368px]
+    "
+    >
       <div className="container max-w-[1140px]">
         <HeadingWithParagraph
           heading="Luxury & Sports Car Rental"
@@ -29,7 +37,7 @@ const CategoryPage = async () => {
           ))}
         </div>
       </div>
-    </Section>
+    </section>
   );
 };
 

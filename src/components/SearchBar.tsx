@@ -45,8 +45,8 @@ const SearchBar = () => {
       )}
       <Input
         className={cn(
-          "border-r-none bg-transparent border-white/60 placeholder:text-white",
-          pathname !== "/" && "border-black placeholder:text-black"
+          "border-r-none bg-transparent border-white/20 placeholder:text-white",
+          pathname !== "/" && "border-[#00000CC] placeholder:text-black"
         )}
         placeholder="Search"
         value={query}

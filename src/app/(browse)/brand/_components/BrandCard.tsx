@@ -17,7 +17,7 @@ const BrandCard = ({ brand }: IProps) => {
           src={brand.imageUrl}
         />
       </figure>
-      <h3 className="p-2 mt-2 border-t-1 border-black text-lg font-medium">
+      <h3 className="capitalize p-2 mt-2 border-t-1 border-black text-lg font-medium">
         {brand.name}
       </h3>
     </article>

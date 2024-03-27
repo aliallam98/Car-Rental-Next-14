@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        "absolute top-0 w-full z-50 p-5 text-white bg-transparent",
+        "absolute top-0 w-full z-50 p-4 text-white bg-transparent",
         pathname !== "/" && "!text-black border-b"
       )}
     >

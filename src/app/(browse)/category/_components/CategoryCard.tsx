@@ -9,7 +9,7 @@ interface IProps {
 const CategoryCard = ({ category }: IProps) => {
   return (
     <Link href={`/category/${category.slug}`}>
-      <article className="max-w-[350px] h-[320px]  shadow-lg  mx-auto mt-6 object-cover object-center rounded-3xl overflow-hidden border ">
+      <article className="bg-white max-w-[350px] h-[320px]  shadow-lg  mx-auto mt-6 object-cover object-center rounded-3xl overflow-hidden border ">
         <figure className="w-full">
           <Image
             width={350}
