@@ -8,6 +8,7 @@ import { checkUser } from "./user.actions";
 import { handleError } from "@/lib/utils";
 import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
 import { createActivityLogs } from "./activity.action";
+import { revalidatePath } from "next/cache";
 
 export const getAllBrands = async () => {
   await connectToDatabase();
@@ -42,7 +43,6 @@ export const createBrand = async (brandData: ICreateBrandParams) => {
     brandData.slug = slugify(brandData.name);
     brandData.createdBy = userId;
 
-
     const newBrand = await brandModel.create(brandData);
 
     const ac = await createActivityLogs({
@@ -52,8 +52,8 @@ export const createBrand = async (brandData: ICreateBrandParams) => {
       entityType: ENTITY_TYPE.Brand,
     });
 
-    console.log("Activity",ac);
-    
+    console.log("Activity", ac);
+
     return {
       success: true,
       message: `Brand ${newBrand.name} created successfully`,
@@ -94,21 +94,31 @@ export const updateBrand = async (
   return { success: true, message: "Created", results: newBrand };
 };
 
-export const deleteBrand = async (brandId: string, userId: string) => {
-  await connectToDatabase();
+export const deleteBrand = async (brandId: string) => {
+  try {
+    await connectToDatabase();
+    const userId = await checkUser();
 
-  const brandToDelete = await brandModel.findById(brandId);
+    const brandToDelete = await brandModel.findById(brandId);
 
-  if (!brandToDelete) throw new Error("Cannot Find This brand");
-  if (brandToDelete.createdBy !== userId) throw new Error("Unauthorized");
-  await brandModel.findByIdAndDelete(brandId);
+    if (!brandToDelete) throw new Error("Cannot Find This brand");
+    if (brandToDelete.createdBy.toString() !== userId?.toString())
+      throw new Error("Unauthorized");
 
-  await createActivityLogs({
-    entityId: brandToDelete._id,
-    entityTitle: brandToDelete.name,
-    actionType: ACTIONS_TYPE.Delete,
-    entityType: ENTITY_TYPE.Brand,
-  });
+    await brandModel.findByIdAndDelete(brandId);
 
-  return { success: true, message: "Deleted" };
+    await createActivityLogs({
+      entityId: brandToDelete._id,
+      entityTitle: brandToDelete.name,
+      actionType: ACTIONS_TYPE.Delete,
+      entityType: ENTITY_TYPE.Brand,
+    });
+    revalidatePath("/dashboard/brands");
+    revalidatePath("/brand");
+    return { success: true, message: "Deleted" };
+  } catch (error) {
+    console.log(error);
+
+    return { success: false, message: "Something went wrong" };
+  }
 };
