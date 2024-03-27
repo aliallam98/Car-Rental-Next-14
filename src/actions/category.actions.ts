@@ -8,6 +8,7 @@ import { ICreateCategoryParams, IUpdateCategoryParams } from "@/typings";
 import userModel from "@/DB/models/User.model";
 import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
 import { createActivityLogs } from "./activity.action";
+import { revalidatePath } from "next/cache";
 
 export const getAllCategories = async () => {
   await connectToDatabase();
@@ -43,8 +44,6 @@ export const getCategoryById = async (id: string) => {
     };
   }
 };
-
-
 
 export const createCategory = async (categoryData: ICreateCategoryParams) => {
   try {
@@ -127,20 +126,35 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (categoryId: string) => {
-  const userId = await checkUser();
-  await connectToDatabase();
-  const categoryToDelete = await categoryModel.findById(categoryId);
-  if (!categoryToDelete) throw new Error("Cannot Find This Category");
-  if (categoryToDelete.createdBy !== userId) throw new Error("Unauthorized");
+  try {
+    const userId = await checkUser();
+    await connectToDatabase();
 
-  await categoryModel.findByIdAndDelete(categoryId);
+    const categoryToDelete = await categoryModel.findById(categoryId);
+    if (!categoryToDelete) throw new Error("Cannot Find This Category");
+    if (categoryToDelete.createdBy.toString() !== userId?.toString())
+      throw new Error("Unauthorized");
 
-  await createActivityLogs({
-    entityId: categoryToDelete._id,
-    entityTitle: categoryToDelete.name,
-    actionType: ACTIONS_TYPE.Delete,
-    entityType: ENTITY_TYPE.Category,
-  });
+    await categoryModel.findByIdAndDelete(categoryId);
 
-  return { success: true, message: "Deleted" };
+    await createActivityLogs({
+      entityId: categoryToDelete._id,
+      entityTitle: categoryToDelete.name,
+      actionType: ACTIONS_TYPE.Delete,
+      entityType: ENTITY_TYPE.Category,
+    });
+
+    
+    revalidatePath("/dashboard/categories");
+    revalidatePath("/category");
+    return {
+      success: true,
+      message: "Category deleted",
+    };
+  } catch (error) {
+    return {
+      success: true,
+      message: "Something went wrong",
+    };
+  }
 };

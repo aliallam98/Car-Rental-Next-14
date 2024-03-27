@@ -117,8 +117,6 @@ export const deleteBrand = async (brandId: string) => {
     revalidatePath("/brand");
     return { success: true, message: "Deleted" };
   } catch (error) {
-    console.log(error);
-
     return { success: false, message: "Something went wrong" };
   }
 };
