@@ -7,11 +7,30 @@ import { checkUser } from "./user.actions";
 import categoryModel from "@/DB/models/Category.Model";
 import brandModel from "@/DB/models/Brand.Model";
 import { createActivityLogs } from "./activity.action";
-import { ACTIONS_TYPE, ENTITY_TYPE } from "@/typings";
+import { ACTIONS_TYPE, ENTITY_TYPE, IApiFeatures } from "@/typings";
 import { revalidatePath } from "next/cache";
 
-export const getAllCars = async () => {
+export const getAllCars = async (features?: IApiFeatures) => {
   await connectToDatabase();
+
+  if (features) {
+    const cars = await carModel
+      .find({})
+      .skip(features.skip)
+      .limit(features.limit);
+
+    const totalPage = await carModel.countDocuments();
+
+    return {
+      success: true,
+      message: "Done",
+      results: JSON.parse(JSON.stringify(cars)),
+      totalPages: Math.ceil(totalPage / features.limit),
+      page: features.page,
+    };
+  }
+
+
   const cars = await carModel.find({}).populate([
     {
       path: "createdBy",

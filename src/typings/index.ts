@@ -99,7 +99,7 @@ export type UrlQueryParams = {
   value: string | null
 }
 
-export interface IApiFeatures{
+export interface IApiFeatures {
   conditions: {
     query?:string
     category?:string

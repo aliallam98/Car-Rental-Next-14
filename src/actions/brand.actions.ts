@@ -18,7 +18,7 @@ import { revalidatePath } from "next/cache";
 //   features?: IApiFeatures;
 // }
 
-export const getAllBrands = async (features: IApiFeatures) => {
+export const getAllBrands = async (features?: IApiFeatures) => {
   await connectToDatabase();
 
   if (features) {

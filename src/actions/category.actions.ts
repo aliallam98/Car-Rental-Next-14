@@ -4,14 +4,30 @@ import connectToDatabase from "@/DB/connection";
 import categoryModel from "@/DB/models/Category.Model";
 import slugify from "slugify";
 import { checkUser } from "./user.actions";
-import { ICreateCategoryParams, IUpdateCategoryParams } from "@/typings";
-import userModel from "@/DB/models/User.model";
+import { IApiFeatures, ICreateCategoryParams, IUpdateCategoryParams } from "@/typings";
 import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
 import { createActivityLogs } from "./activity.action";
 import { revalidatePath } from "next/cache";
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (features?: IApiFeatures) => {
   await connectToDatabase();
+
+  if (features) {
+    const categories = await categoryModel
+      .find({})
+      .skip(features.skip)
+      .limit(features.limit);
+
+    const totalPage = await categoryModel.countDocuments();
+
+    return {
+      success: true,
+      message: "Done",
+      results: JSON.parse(JSON.stringify(categories)),
+      totalPages: Math.ceil(totalPage / features.limit),
+      page: features.page,
+    };
+  }
   const categories = await categoryModel.find().populate([
     {
       path: "createdBy",
