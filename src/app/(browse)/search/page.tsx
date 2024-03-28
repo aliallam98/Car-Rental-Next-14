@@ -18,6 +18,8 @@ const SearchPage = async ({ searchParams }: SearchParamProps) => {
   const x = ApiFeatures(searchParams);
   const cars = await getAllCars(x);
 
+
+
   return (
     <Section>
       <div className="container">
@@ -30,6 +32,8 @@ const SearchPage = async ({ searchParams }: SearchParamProps) => {
             <span className="font-semibold">{searchParams.query}</span>
           </p>
         </div>
+
+        
 
         {cars.results.length ? (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,300px))] justify-center gap-4">

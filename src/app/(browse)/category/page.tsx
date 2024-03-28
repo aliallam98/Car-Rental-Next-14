@@ -8,6 +8,7 @@ import { ICategory, SearchParamProps } from "@/typings";
 import Section from "@/components/Section";
 import { ApiFeatures } from "@/lib/utils";
 import Pagination from "@/components/Pagination";
+import CardSkeleton from "@/components/CardSkeleton";
 
 export const metadata: Metadata = {
   title: "Category Page",
@@ -17,6 +18,16 @@ export const metadata: Metadata = {
 const CategoryPage = async ({ searchParams }: SearchParamProps) => {
   const x = ApiFeatures(searchParams);
   const categories = await getAllCategories(x);
+
+  if (!categories) {
+    return (
+      <Section>
+        <div className="container grid grid-cols-[repeat(auto-fill,minmax(250px,300px))] justify-center gap-4">
+          {[...Array(6).map((_, i) => <CardSkeleton key={i} />)]}
+        </div>
+      </Section>
+    );
+  }
 
   return (
     <section
@@ -35,7 +46,7 @@ const CategoryPage = async ({ searchParams }: SearchParamProps) => {
         />
 
         <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,300px))] justify-center gap-4">
-          {categories.results.map((category: ICategory, i: number) => (
+          {categories?.results?.map((category: ICategory, i: number) => (
             <CategoryCard category={category} key={i} />
           ))}
         </div>

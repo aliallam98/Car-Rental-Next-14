@@ -1,5 +1,6 @@
 import { getAllCars } from "@/actions/car.actions";
 import Card from "@/components/Card";
+import CardSkeleton from "@/components/CardSkeleton";
 import HeadingWithParagraph from "@/components/HeadingWithParagraph";
 import Pagination from "@/components/Pagination";
 import Section from "@/components/Section";
@@ -32,7 +33,6 @@ const CarPage = async ({ searchParams }: SearchParamProps) => {
         </div>
 
         <Pagination totalPages={cars.totalPages} page={cars.page} />
-
       </div>
     </Section>
   );
