@@ -15,7 +15,7 @@ export const getAllCars = async (features?: IApiFeatures) => {
 
   if (features) {
     const cars = await carModel
-      .find({})
+      .find(features.conditions)
       .skip(features.skip)
       .limit(features.limit);
 
