@@ -1,22 +1,28 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
- const dbUrl = process.env.DB_URL as string
- let cached = (global as any).mongoose || {conn : null , promise:null}
+const dbUrl = process.env.DB_URL as string;
+let cached = (global as any).mongoose || { conn: null, promise: null };
 
-const connectToDatabase = async () =>{
+const connectToDatabase = async () => {
+  if (!dbUrl) throw new Error("DB url is not exist");
 
-    if(!dbUrl) throw new Error("DB url is not exist")
+  if (cached.conn) return cached.conn;
 
+  cached.promise =
+    cached.promise ||
+    (await mongoose
+      .connect(dbUrl, {
+        dbName: "Car-Rental",
+      })
+      .then((mongoose) => {
+        console.log("DB Is Connected");
+        return mongoose;
+      })
+      .catch(() => console.log("Failed To Connect")));
 
-    if(cached.conn) return cached.conn
+  cached.conn = await cached.promise;
 
-    cached.process = cached.promise ||  await mongoose.connect(dbUrl,{
-        dbName : "Car-Rental"
-    }).then(()=>console.log("DB Is Connected")).catch(()=>console.log("Failed To Connect"))
+  return cached.conn;
+};
 
-    cached.conn = await cached.process
-    return cached.conn
-
-}
-
-export default connectToDatabase
+export default connectToDatabase;
