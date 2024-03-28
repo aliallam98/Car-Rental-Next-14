@@ -88,3 +88,27 @@ export interface IUpdateBrandParams {
   description?: String;
   imageUrl?: String;
 }
+export type SearchParamProps = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export type UrlQueryParams = {
+  params: string
+  key: string
+  value: string | null
+}
+
+export interface IApiFeatures{
+  conditions: {
+    query?:string
+    category?:string
+    categoryId?:string
+  }
+  page: number,
+  skip: number,
+  limit: number,
+  sort: string,
+  order: string,
+  fields: [] | string| undefined
+} 

@@ -7,7 +7,7 @@ import {
   Phone,
   ShoppingCart,
   Store,
-  Users,
+  Activity,
 } from "lucide-react";
 
 export const faq = [
@@ -108,7 +108,7 @@ export const adminDashboardLinks = [
   },
   {
     label: "Activity",
-    path: `/dashboard/activity`,
-    icon: Users,
+    path: `/dashboard/activities`,
+    icon: Activity,
   },
 ];

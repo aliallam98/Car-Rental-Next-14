@@ -2,7 +2,11 @@
 
 import connectToDatabase from "@/DB/connection";
 import brandModel from "@/DB/models/Brand.Model";
-import { ICreateBrandParams, IUpdateBrandParams } from "@/typings";
+import {
+  IApiFeatures,
+  ICreateBrandParams,
+  IUpdateBrandParams,
+} from "@/typings";
 import slugify from "slugify";
 import { checkUser } from "./user.actions";
 import { handleError } from "@/lib/utils";
@@ -10,8 +14,30 @@ import { ACTIONS_TYPE, ENTITY_TYPE } from "../typings";
 import { createActivityLogs } from "./activity.action";
 import { revalidatePath } from "next/cache";
 
-export const getAllBrands = async () => {
+// interface IBandsFeatures {
+//   features?: IApiFeatures;
+// }
+
+export const getAllBrands = async (features: IApiFeatures) => {
   await connectToDatabase();
+
+  if (features) {
+    const brands = await brandModel
+      .find({})
+      .skip(features.skip)
+      .limit(features.limit);
+
+    const totalPage = await brandModel.countDocuments();
+
+    return {
+      success: true,
+      message: "Done",
+      results: JSON.parse(JSON.stringify(brands)),
+      totalPages: Math.ceil(totalPage / features.limit),
+      page: features.page,
+    };
+  }
+
   const brands = await brandModel.find({}).populate([
     {
       path: "createdBy",
@@ -92,7 +118,6 @@ export const updateBrand = async (
     entityType: ENTITY_TYPE.Brand,
   });
 
-  
   revalidatePath(`/dashboard/brands/${brandId}`);
   revalidatePath("/dashboard/brands/");
   revalidatePath("/dashboard/brand/");
