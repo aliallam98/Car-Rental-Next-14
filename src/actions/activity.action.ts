@@ -5,7 +5,7 @@ import { checkUser } from "./user.actions";
 import activityModel from "@/DB/models/Activity.Model";
 import { currentUser } from "@clerk/nextjs";
 import userModel from "@/DB/models/User.model";
-import { ACTIONS_TYPE, ENTITY_TYPE } from "@/typings";
+import { ACTIONS_TYPE, ENTITY_TYPE, IApiFeatures } from "@/typings";
 
 interface IProps {
   entityId: string;
@@ -35,7 +35,6 @@ export const createActivityLogs = async ({
       throw new Error("User not found");
     }
 
-
     const newActivity = await activityModel.create({
       userId: isExist._id,
       userFullName: `${isExist.firstName} - ${isExist.lastName}`,
@@ -56,12 +55,23 @@ export const createActivityLogs = async ({
   }
 };
 
-export const getAllActivities = async () => {
+export const getAllActivities = async (features: IApiFeatures) => {
   try {
     await connectToDatabase();
     await checkUser();
-    const activities = await activityModel.find({});
+    const activities = await activityModel
+      .find({})
+      .skip(features.skip)
+      .limit(features.limit);
 
-    return JSON.parse(JSON.stringify(activities))
+    const totalPage = await activityModel.countDocuments();
+
+    return {
+      success: true,
+      message: "Done",
+      results: JSON.parse(JSON.stringify(activities)),
+      totalPages: Math.ceil(totalPage / features.limit),
+      page: features.page,
+    };
   } catch (error) {}
 };
