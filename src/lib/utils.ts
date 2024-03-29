@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from 'query-string'
-import { UrlQueryParams } from "@/typings";
+import { ACTIONS_TYPE, IActivityLog, UrlQueryParams } from "@/typings";
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -113,3 +113,19 @@ export const ApiFeatures = (reqQuery:any)=>{
       }
   
 }
+
+
+export const generateLogMessage = (log: IActivityLog) => {
+  const { actionType, entityTitle, entityType } = log;
+
+  switch (actionType) {
+    case ACTIONS_TYPE.Create:
+      return `created ${entityType.toLowerCase()} "${entityTitle}"`;
+    case ACTIONS_TYPE.Update:
+      return `updated ${entityType.toLowerCase()} "${entityTitle}"`;
+    case ACTIONS_TYPE.Delete:
+      return `deleted ${entityType.toLowerCase()} "${entityTitle}"`;
+    default:
+      return `unknown action ${entityType.toLowerCase()} "${entityTitle}"`;
+  };
+};

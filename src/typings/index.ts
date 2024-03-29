@@ -55,6 +55,18 @@ export interface IBooking {
   createdAt: Date; // Inherited from timestamps: true
   updatedAt: Date; // Inherited from timestamps: true
 }
+export interface IActivityLog {
+  _id: string;
+  entityType: string;
+  entityTitle: string;
+  entityId: string;
+  actionType: string;
+  userId: string;
+  userImage: string;
+  userFullName: string;
+  createdAt: Date; // Inherited from timestamps: true
+  updatedAt: Date; // Inherited from timestamps: true
+}
 
 export interface ICreateUserParams {
   clerkId?: string;

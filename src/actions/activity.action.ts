@@ -35,7 +35,6 @@ export const createActivityLogs = async ({
       throw new Error("User not found");
     }
 
-    console.log(isExist);
 
     const newActivity = await activityModel.create({
       userId: isExist._id,
@@ -57,16 +56,12 @@ export const createActivityLogs = async ({
   }
 };
 
-export const getAllOrgActivities = async () => {
+export const getAllActivities = async () => {
   try {
     await connectToDatabase();
     await checkUser();
     const activities = await activityModel.find({});
 
-    return {
-      success: true,
-      message: "Activity Done",
-      results: JSON.parse(JSON.stringify(activities)),
-    };
+    return JSON.parse(JSON.stringify(activities))
   } catch (error) {}
 };
